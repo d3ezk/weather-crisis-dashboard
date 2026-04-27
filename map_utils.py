@@ -3,17 +3,17 @@ import folium
 def build_alert_map(alerts):
     """
     Build a folium map showing alert zones for the given list of alerts.
-    
+
     Args:
         alerts (list): List of parsed alert dicts from weather_api.py
-    
+
     Returns:
         folium.Map: A map object that Streamlit can render.
     """
     # Start centered on the continental US
     m = folium.Map(location=[38.0, -96.0], zoom_start=4, tiles="CartoDB positron")
-    
-    # Color map for severity
+
+    # Color map for severity levels
     severity_colors = {
         "Extreme":  "red",
         "Severe":   "orange",
@@ -21,16 +21,14 @@ def build_alert_map(alerts):
         "Minor":    "green",
         "Unknown":  "gray",
     }
-    
+
     for alert in alerts:
         severity = alert.get("severity", "Unknown")
         color    = severity_colors.get(severity, "gray")
-        headline = alert.get("headline", "Alert")
         area     = alert.get("area", "Unknown Area")
         event    = alert.get("event", "Weather Alert")
-        
         geometry = alert.get("geometry")
-        
+
         if geometry:
             # If the alert has polygon coordinates, draw it on the map
             try:
@@ -42,12 +40,9 @@ def build_alert_map(alerts):
                         "weight":      2,
                         "fillOpacity": 0.35,
                     },
-                    tooltip=folium.Tooltip(f"<b>{event}</b><br>{area}")
+                    tooltip=f"{event} — {area}"
                 ).add_to(m)
             except Exception:
                 pass  # Skip alerts with malformed geometry
-        else:
-            # No geometry — just note it; some alerts don't have polygon data
-            pass
-    
+
     return m
