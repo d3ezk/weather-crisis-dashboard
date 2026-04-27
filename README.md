@@ -43,5 +43,6 @@ This application allows users to explore active severe weather alerts across any
 
 ## Team
 
-- [Your Name]
-- [Partner Name]
+- Dominick Korwek
+- Anthony Gamboa
+- Tanner Hatch
