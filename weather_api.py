@@ -1,3 +1,4 @@
+# Library used to make HTTP requests to the weather API
 import requests
 
 # Base URL for the National Weather Service API (free, no API key needed)
@@ -13,6 +14,8 @@ def get_alerts_by_state(state_code):
     Returns:
         list: A list of alert dictionaries, or an empty list if none found.
     """
+
+    # Construct API endpoint URL with selected state
     url = f"{BASE_URL}/alerts/active?area={state_code}"
     
     # The NWS API requires a User-Agent header — they use it to contact you if needed
@@ -21,12 +24,14 @@ def get_alerts_by_state(state_code):
     }
     
     try:
+        # Send GET request to API
         response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()  # Raises an error if the request failed
-        
+        # Raises an error if the request failed
+        response.raise_for_status()
+        # Convert response to JSON format
         data = response.json()
+        # Extract alert list from response
         alerts = data.get("features", [])
-        
         # Parse out only the fields we care about
         parsed = []
         for alert in alerts:
@@ -44,10 +49,11 @@ def get_alerts_by_state(state_code):
             })
         
         return parsed
-    
+    # Handle request timeout separately
     except requests.exceptions.Timeout:
         print("Request timed out. Check your internet connection.")
         return []
+    # Handle all other request related errors
     except requests.exceptions.RequestException as e:
         print(f"Error fetching alerts: {e}")
         return []
@@ -58,6 +64,7 @@ def get_severity_color(severity):
     Return a color string based on alert severity.
     Used for color-coding alerts in the UI.
     """
+    # Mapping of severity levels to colors for consistent UI styling
     colors = {
         "Extreme":  "#d32f2f",  # Red
         "Severe":   "#f57c00",  # Orange
@@ -65,4 +72,5 @@ def get_severity_color(severity):
         "Minor":    "#388e3c",  # Green
         "Unknown":  "#757575",  # Gray
     }
+    # Return matching color but default to gray if unknown
     return colors.get(severity, "#757575")

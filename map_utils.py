@@ -1,5 +1,4 @@
 import folium
-import json
 
 def build_alert_map(alerts):
     """

@@ -1,3 +1,4 @@
+# Import libraries for the UI, maps, API calls, and data visualization
 import streamlit as st
 from streamlit_folium import st_folium
 from weather_api import get_alerts_by_state, get_severity_color
@@ -15,15 +16,15 @@ st.set_page_config(
 )
 
 # ─────────────────────────────────────────────
-# Header
+# Display app title and description
 # ─────────────────────────────────────────────
 st.title("⛈️ Weather Crisis Dashboard")
 st.markdown("Real-time severe weather alerts across the United States, powered by the National Weather Service.")
 st.divider()
 
-# ─────────────────────────────────────────────
-# All 50 US states mapped to their 2-letter code
-# ─────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────
+# All 50 US states mapped to their 2-letter code for API use
+# ──────────────────────────────────────────────────────────
 US_STATES = {
     "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR",
     "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE",
@@ -41,7 +42,7 @@ US_STATES = {
 }
 
 # ─────────────────────────────────────────────
-# Sidebar filters
+# Sidebar filters for user input
 # ─────────────────────────────────────────────
 st.sidebar.header("🔍 Filter Alerts")
 
@@ -115,7 +116,7 @@ if alerts:
         "Minor":    "#388e3c",
         "Unknown":  "#757575"
     }
-
+    # Create bar chart
     fig = px.bar(
         df_severity,
         x="Severity",
@@ -135,7 +136,7 @@ else:
 st.divider()
 
 # ─────────────────────────────────────────────
-# Map + Alert list side by side
+# Display Map + Alert list side by side
 # ─────────────────────────────────────────────
 map_col, list_col = st.columns([1.4, 1])
 
