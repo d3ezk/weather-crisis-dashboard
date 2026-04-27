@@ -17,7 +17,7 @@ def get_alerts_by_state(state_code):
     
     # The NWS API requires a User-Agent header — they use it to contact you if needed
     headers = {
-        "User-Agent": "WeatherCrisisDashboard/1.0 (your_email@example.com)"
+        "User-Agent": "WeatherCrisisDashboard/1.0 (dfk5623@psu.edu)"
     }
     
     try:
